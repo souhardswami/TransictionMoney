@@ -120,3 +120,36 @@ def user(request,num):
     
 
     return render(request, 'user.html',{'content':content})
+
+
+
+def createmoney(request):
+
+    if(request.method=='POST'):
+        
+        money=request.POST['money']
+        user=request.POST['user']
+        
+        
+        
+        
+
+        money=int(money)
+        
+
+
+        activeuser=User.objects.get(id=user)
+        
+        activeuser.accoun_balanch+=money
+        
+        activeuser.save()
+        
+
+        
+        print("fine")
+
+
+        
+        return redirect("/main/user/"+str(user))
+
+    
