@@ -29,7 +29,9 @@
 
   <div id="app" >
         
-    {% block content %}
+    {% block login %}
+    {% endblock %}
+    {% block signup %}
     {% endblock %}
 
     
@@ -39,55 +41,17 @@
 <script>
 
 
-// var app = new Vue({
-//   el: '#app',
-//   delimiters: ['[[',']]'],
+var app = new Vue({
+  el: '#app',
+  delimiters: ['[[',']]'],
 
-//   data: {
-//     message: 'Hello Vue!',
-//     islog:true,
-//     show:true,
-//     moneytransfor:false,
-//     historylist:false,
-//     addmoney:false,
-//     open:false,
-//     moneytype:'currency',
-   
-//   },
+  data: {
+    message: 'Hello Vue!',
+    
+  },
 
 
-
-
-
-
-//   methods:{
-//       disLogin(){
-//           this.show=true
-//       },
-//       hidLogin(){
-//         this.show=false
-
-//       },
-//       ismoneytransfor(){
-//           this.moneytransfor=true
-//           console.log("jbhbr")
-//       },
-//       ishistorylist(){
-//           this.historylist=true
-//           console.log("jbhbr")
-//       },
-
-//       createmoney(){
-//         this.addmoney=true,
-//         console.log("money")
-//       },
-//       typeadded(type){
-//         this.moneytype=type,
-//         this.open=false
-//       }
-//   },
-
-// })
+})
 // </script>
 </html>
 

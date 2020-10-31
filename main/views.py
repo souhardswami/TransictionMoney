@@ -17,8 +17,19 @@ def home(request):
 
 
 
-def signin(request):
-    print("pass")
+def signup(request):
+    print("nn")
+    if(request.method=='POST'):
+        print("hello")
+        print(request)
+        return redirect('/home')
+    
+    return render(request,'signup.html')
+
+def main(request):
+
+    return render(request,'main.html')
+
 
 def login(request):
     print("pass")
