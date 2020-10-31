@@ -17,6 +17,10 @@
         height: 100%;
         width: 100%;
       }
+
+      .side{
+        margin-left:-20px;
+      }
     
     </style>
 
@@ -33,6 +37,12 @@
     {% endblock %}
     {% block signup %}
     {% endblock %}
+    {% block main %}
+    {% endblock %}
+    {% block pay %}
+    {% endblock %}
+    {% block person %}
+    {% endblock %}
 
     
   </div>
@@ -46,7 +56,7 @@ var app = new Vue({
   delimiters: ['[[',']]'],
 
   data: {
-    message: 'Hello Vue!',
+    person: 'Souhard',
     
   },
 

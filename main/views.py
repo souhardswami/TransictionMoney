@@ -12,6 +12,10 @@ from django.db.models import Count,Sum
 
 
 def home(request):
+    if(request.method=='POST'):
+        print("hello")
+        print(request)
+        return redirect('/main')
     print("jjjjj")
     return render(request,'home.html')
 
@@ -27,17 +31,30 @@ def signup(request):
     return render(request,'signup.html')
 
 def main(request):
-
+    print("main")
     return render(request,'main.html')
 
+def pay(request):
+
+    if(request.method=='POST'):
+        print("hello")
+        print(request)
+        return redirect('/person')
+
+    return render(request,'pay.html')
+
+
+def person(request):
+
+
+    return render(request,'person.html')
 
 def login(request):
     print("pass")
 
 
-def moneytransfer(request):
 
-    print("pass")
+    
 
 
 
