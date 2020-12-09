@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% block wallet %}
+
+
+<section class="text-gray-500 bg-gray-900 body-font overflow-hidden">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="lg:w-4/5 mx-auto flex flex-wrap">
+        <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+          <h2 class="text-sm title-font text-gray-600 tracking-widest">Hi, Your name</h2>
+          <h1 class="text-white text-3xl title-font font-medium mb-4">Your current balance</h1>
+          
+          
+          <div class="flex">
+            <span class="title-font font-medium text-2xl text-white">$58.00</span>
+             <button class="flex ml-auto text-white bg-orange-600 border-0 py-2 px-6 focus:outline-none hover:bg-orange-500 rounded"><a href='/main'>➢Home</a></button>
+          
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

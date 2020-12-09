@@ -61,3 +61,12 @@ def login(request):
 def user(request,num):
     print("pass")
 
+
+def wallet(request):
+    print("fine")
+    return render(request,'wallet.html')
+
+
+def history(request):
+    print('hist')
+    return render(request,'history.html')
