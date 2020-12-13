@@ -4,13 +4,17 @@ from django.db import models
 
 
 class User(models.Model):
-    name=models.CharField(max_length=10)
-    pas=models.CharField(max_length=10)
+    firstName=models.CharField(max_length=10,default='')
+    lastName=models.CharField(max_length=10)
+    mob=models.CharField(max_length=10)
+    pas=models.CharField(max_length=20)
+    email=models.EmailField(max_length=30)
+
     accoun_balanch=models.IntegerField(default=0)
 
 
     def __str__(self):
-        return self.name
+        return self.firstName
 
 
 
