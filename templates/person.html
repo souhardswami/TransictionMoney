@@ -8,13 +8,17 @@
 
 
 <section class="text-gray-500 bg-gray-900 body-font relative">
-    <form action="/pay/" method="POST">
+    <form action="/person/" method="POST">
         {% csrf_token %}
+
+
+        
+        
 
 
         <div class="container px-5 py-24 mx-auto flex"></div>
         <div class=" text-center w-full mb-12 ">
-            <h1 class="sm:text-3xl text-xl font-medium title-font mb-4 text-white">[[person]]</h1>
+            <h1 class="sm:text-3xl text-xl font-medium title-font mb-4 text-white">{{ reciever }}</h1>
             
           </div>
 
@@ -23,7 +27,7 @@
                 <div class="flex items-center border-b border-orange-500 py-2 mx-12">
                     <button class="flex-shrink-0 bg-gray-900   text-sm  text-white py-1 px-2 rounded" >IRC</button>
 
-                    <input class="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none" type="number"  aria-label="Amount" placeholder="amount">
+                    <input class="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none" type="number"  aria-label="Amount" placeholder="amount" name="amount">
                         <button class="flex-shrink-0 bg-orange-600 hover:bg-orange-600 border-orange-600 hover:border-orange-600 text-sm border-4 text-white py-1 px-2 rounded" >
                     send</button>
             

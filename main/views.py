@@ -8,10 +8,13 @@ from django.db.models import Q
 
 from django.http import HttpResponse
 
-# from .models import User,Transiction,MoneyType
-# from .models import User
-from django.db.models import Count,Sum
+from json import dumps
 
+
+
+# from .models import User,Transiction,MoneyType
+from .models import CustomUser
+from django.db.models import Count,Sum
 
 
 
@@ -25,7 +28,7 @@ def home(request):
         auth.login(request,user)
 
 
-        return redirect('/signup')
+        # return redirect('/signup')
 
 
         return redirect('/main')
@@ -45,8 +48,12 @@ def signup(request):
         password=request.POST['password']
 
         # newUser = User(firstName=firstName,lastName=lastName,mob=mobile,pas=password,email=email) 
-        newUser = User.objects.create_user(username=firstName,password=password,email=email) 
+        newUser = User.objects.create_user(username=firstName+lastName,password=password,email=email) 
         newUser.save()
+
+
+        customuser=CustomUser(user=newUser,mob=mobile,account_balance=10)
+        customuser.save()
 
         return redirect('/home')
     
@@ -67,21 +74,40 @@ def logout(request):
     return redirect('/home')
 
 
+def person(request,targetUser=None):
 
+
+    
+    
+    if(request.method=='POST' and request.path_info=='/person/'):
+        amount=request.POST['amount']
+        print(amount)
+
+
+    context={
+        'reciever': targetUser.username
+    }
+    return render(request,'person.html',context)
+
+
+@login_required
 def pay(request):
 
     if(request.method=='POST'):
         print("hello")
         print(request)
-        return redirect('/person')
+
+        mobileNumber=request.POST['mobileNumber']
+
+
+        targetUser=CustomUser.objects.filter(mob=mobileNumber)[0]
+        print(targetUser.user.username)
+        
+        # return redirect('/person')
+        return person(request,targetUser.user)
 
     return render(request,'pay.html')
 
-
-def person(request):
-
-
-    return render(request,'person.html')
 
 def login(request):
     print("pass")

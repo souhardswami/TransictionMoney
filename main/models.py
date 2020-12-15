@@ -3,18 +3,34 @@ from django.db import models
 # Create your models here.
 
 
-class User(models.Model):
-    firstName=models.CharField(max_length=10,default='')
-    lastName=models.CharField(max_length=10)
-    mob=models.CharField(max_length=10)
-    pas=models.CharField(max_length=20)
-    email=models.EmailField(max_length=30)
+# class User(models.Model):
+#     User=models.CharField(max_length=10,default='')
+    
+#     mob=models.CharField(max_length=10)
+    
 
-    accoun_balanch=models.IntegerField(default=0)
+#     accoun_balanch=models.IntegerField(default=0)
+
+
+#     def __str__(self):
+#         return self.firstName
+
+from django.contrib.auth.models import User, auth
+
+
+
+
+class CustomUser(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
+    
+    mob=models.CharField(max_length=10)
+    
+
+    account_balance=models.IntegerField(default=0)
 
 
     def __str__(self):
-        return self.firstName
+        return self.mob
 
 
 
