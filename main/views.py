@@ -30,7 +30,7 @@ def home(request):
 
         return redirect('/main')
     print("jjjjj")
-    return render(request,'home.html')
+    return render(request,'registration/login.html')
 
 
 # @login_required
@@ -59,6 +59,12 @@ def main(request):
     # print(user.get_username)
     print("main")
     return render(request,'main.html')
+
+@login_required
+def logout(request):
+
+    auth.logout(request)
+    return redirect('/home')
 
 
 
