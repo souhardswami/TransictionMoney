@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.models import User, auth
 
 
 from django.db.models import Q
@@ -8,7 +9,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 
 # from .models import User,Transiction,MoneyType
-from .models import User
+# from .models import User
 from django.db.models import Count,Sum
 
 
@@ -16,10 +17,15 @@ from django.db.models import Count,Sum
 
 def home(request):
     if(request.method=='POST'):
-        print("hello")
-        print(request)
-        print("111")
-        
+        username=request.POST['username']
+        password=request.POST['password']
+
+        user=auth.authenticate(username=username,password=password)
+
+        auth.login(request,user)
+
+
+        return redirect('/signup')
 
 
         return redirect('/main')
@@ -27,7 +33,7 @@ def home(request):
     return render(request,'home.html')
 
 
-@login_required
+# @login_required
 def signup(request):
 
     if(request.method=='POST'):
@@ -38,17 +44,23 @@ def signup(request):
         email=request.POST['email']
         password=request.POST['password']
 
-        newUser = User(firstName=firstName,lastName=lastName,mob=mobile,pas=password,email=email) 
+        # newUser = User(firstName=firstName,lastName=lastName,mob=mobile,pas=password,email=email) 
+        newUser = User.objects.create_user(username=firstName,password=password,email=email) 
         newUser.save()
 
         return redirect('/home')
     
     return render(request,'signup.html')
 
+
+
+@login_required
 def main(request):
-    print(user.get_username)
+    # print(user.get_username)
     print("main")
     return render(request,'main.html')
+
+
 
 def pay(request):
 
