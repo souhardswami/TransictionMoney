@@ -8,7 +8,7 @@ from django.db.models import Q
 
 from django.http import HttpResponse
 
-from json import dumps
+from django.contrib import messages
 
 
 
@@ -31,13 +31,20 @@ def home(request):
 
         user=auth.authenticate(username=username,password=password)
 
-        auth.login(request,user)
+        if(user is not None):
+
+            messages.success(request,'succesfully login')
+            auth.login(request,user)
+            return redirect('/main')
+        else:
+            messages.error(request,'wrong username/password')
+            # return redirect('/')
 
 
         # return redirect('/signup')
 
 
-        return redirect('/main')
+        
     print("jjjjj")
     return render(request,'registration/login.html')
 
@@ -60,8 +67,10 @@ def signup(request):
 
         customuser=CustomUser(user=newUser,mob=mobile,account_balance=0)
         customuser.save()
+        messages.success(request,'succesfully register')
 
-        return redirect('/home')
+        return redirect('/')
+
     
     return render(request,'signup.html')
 
@@ -75,9 +84,10 @@ def main(request):
 
 @login_required
 def logout(request):
-
+    
+    messages.info(request,'loged out')
     auth.logout(request)
-    return redirect('/home')
+    return redirect('/')
 
 @login_required
 def person(request,targetUser=None):
@@ -118,10 +128,13 @@ def person(request,targetUser=None):
 
             newTransiction=Transiction(sender=login_user,reciever=targetUser,amount=amount)
             newTransiction.save()
+            messages.success(request,str(amount)+' has beed sended')
             
 
         else:
-            print("you have not enought amount to send send")
+            print("you have not enought amount to send")
+            messages.error(request,'you have not enought amount to send ')
+
         return redirect('/main')
         
 
@@ -142,9 +155,21 @@ def pay(request):
 
         mobileNumber=request.POST['mobileNumber']
 
+        if(len(mobileNumber)!=10):
+            messages.warning(request,'Number is wrong ')
+            return render(request,'pay.html')
 
-        targetUser=CustomUser.objects.filter(mob=mobileNumber)[0]
+
+
+        targetUser=CustomUser.objects.filter(mob=mobileNumber)
+        print(targetUser)
+        if(len(targetUser)==0):
+            messages.warning(request,'Number is wrong ')
+            return render(request,'pay.html')
+        targetUser=targetUser[0]
         login_user=CustomUser.objects.filter(user_id=request.user)[0]
+
+        
         # print(login_user)
         # print(targetUser.user.username)
         login_user.targetuser=mobileNumber
@@ -152,7 +177,7 @@ def pay(request):
         
         # return redirect('/person')
         return person(request,targetUser.user)
-
+    messages.info(request,'Enter number ')
     return render(request,'pay.html')
 
 
@@ -170,7 +195,7 @@ def wallet(request):
 
 
 
-
+@login_required
 def history(request):
     print('hist')
 
@@ -198,9 +223,8 @@ def history(request):
     for i in myTransiction:
 
         dic={}
-        dic['mobile']=i.send.mob
-        dic['mobile']=i
-        dic['user']=User.objects.get(pk=i.reciever.user_id).username
+        dic['mobile']=i.sender.mob
+        dic['user']=User.objects.get(pk=i.sender.user_id).username
         dic['amount']=i.amount
         dic['sender']=False
         st=i.time

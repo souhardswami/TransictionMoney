@@ -8,10 +8,39 @@
 
     
     <section class="text-gray-500  body-font relative">
-    <div class="container px-5 py-24 mx-auto">
+    <div class="container px-5 py-10 mx-auto">
         <div class="flex flex-col text-center w-full mb-12">
+        
+            
+
+
+
+            <div class="text-center">
+                {% for message in messages%}
+                    {% if message.tags == 'success'%}
+                      <div class="bg-green-500 relative text-orange-100 py-3 px-3 rounded-lg">
+                        &#10003; &nbsp; {{ message }}
+                      </div>
+                    {% elif message.tags == 'info'%}
+                      <div class="bg-orange-500 relative text-orange-100 py-3 px-3 rounded-lg">
+                        &#10069; &nbsp; {{ message }}
+          
+                      </div>
+          
+                    {% elif message.tags == 'error'%}
+                      <div class="bg-red-500 relative text-orange-100 py-3 px-3 rounded-lg">
+                        &#10006; &nbsp;  {{ message }}
+                        
+                      </div>
+                    {% elif message.tags == 'warning'%}
+                      <div class="bg-yellow-500 relative text-orange-100 py-3 px-3 rounded-lg">
+                        war {{ message }}
+                      </div>
+                     {% endif %}
+          
+                {% endfor %}
+                </div>
         <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-orange-600">Sign Up</h1>
-        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-orange-600">{{user.username}}</h1>
         </div>
         
         <div class="lg:w-1/3 md:w-1/2 flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0">
