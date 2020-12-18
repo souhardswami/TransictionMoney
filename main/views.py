@@ -12,8 +12,7 @@ from json import dumps
 
 
 
-# from .models import User,Transiction,MoneyType
-from .models import CustomUser
+from .models import CustomUser,Transiction
 from django.db.models import Count,Sum
 
 
@@ -100,15 +99,25 @@ def person(request,targetUser=None):
             print("semd")
 
 
+            # RECIEVER UPDATE
             targetUser_mobile=CustomUser.objects.filter(user_id=request.user)[0].targetuser
             targetUser=CustomUser.objects.filter(mob=targetUser_mobile)[0]
             targetUser.account_balance+=amount
             targetUser.save()
 
+
+            # SENDER UPDATE
             login_user=CustomUser.objects.filter(user_id=request.user)[0]
             login_user.account_balance-=amount
             login_user.targetuser=''
             login_user.save()
+
+
+
+            # TRANSICTION CREATE
+
+            newTransiction=Transiction(sender=login_user,reciever=targetUser,amount=amount)
+            newTransiction.save()
             
 
         else:
@@ -161,19 +170,45 @@ def wallet(request):
 
 
 
-def login(request):
-    print("pass")
-
-
-
-    
-
-
-
-def user(request,num):
-    print("pass")
-
 
 def history(request):
     print('hist')
-    return render(request,'history.html')
+
+    login_user=CustomUser.objects.filter(user_id=request.user)[0]
+
+    myTransiction=Transiction.objects.filter(sender=login_user)
+
+    transictionArr=[]
+    for i in myTransiction:
+
+        dic={}
+        dic['mobile']=i.reciever.mob
+        dic['user']=User.objects.get(pk=i.reciever.user_id).username
+        dic['amount']=i.amount
+        dic['sender']=True
+        st=i.time
+        dic['date'] = st.strftime("%Y-%m-%d %H:%M:%S")
+        
+
+        transictionArr.append(dic)
+    
+    
+    
+    myTransiction=Transiction.objects.filter(reciever=login_user)
+    for i in myTransiction:
+
+        dic={}
+        dic['mobile']=i.send.mob
+        dic['mobile']=i
+        dic['user']=User.objects.get(pk=i.reciever.user_id).username
+        dic['amount']=i.amount
+        dic['sender']=False
+        st=i.time
+        dic['date'] = st.strftime("%Y-%m-%d %H:%M:%S")
+        
+
+        transictionArr.append(dic)
+
+    print(transictionArr)
+
+    return render(request,'history.html',{'transiction':transictionArr})

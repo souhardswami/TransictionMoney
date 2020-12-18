@@ -21,16 +21,11 @@ from django.contrib.auth.models import User, auth
 
 
 class CustomUser(models.Model):
+
     user=models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
-    
     mob=models.CharField(max_length=10)
-
     targetuser=models.CharField(max_length=10 ,default='0000000000')
-    
-
     account_balance=models.IntegerField(default=0)
-
-
     def __str__(self):
         return self.mob
 
@@ -40,26 +35,14 @@ class CustomUser(models.Model):
 
 
 
-class MoneyType(models.Model):
-    owner=models.ForeignKey(User,on_delete=models.CASCADE)
-    identity=models.CharField(max_length=10)
-
-
-    def __str__(self):
-        return '--'+str(self.owner)+'--'
-
-
-
 class Transiction(models.Model):
 
-    to = models.ForeignKey(User, related_name='RECIEVER',on_delete=models.CASCADE)
-    fromm = models.ForeignKey(User, related_name='SENDER',on_delete=models.CASCADE)
+    reciever = models.ForeignKey(CustomUser, related_name='RECIEVER',on_delete=models.CASCADE)
+    sender = models.ForeignKey(CustomUser, related_name='SENDER',on_delete=models.CASCADE)
     time=models.DateTimeField(auto_now_add=True)
     amount=models.IntegerField(default=0)
-    typeof=models.ForeignKey(MoneyType,related_name='moneytype',on_delete=models.CASCADE)
-
     def __str__(self):
-        return str(self.fromm)+">>>>"+str(self.to)
+        return str(self.sender)+">>>>"+str(self.reciever)
 
 
 
