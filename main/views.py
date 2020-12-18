@@ -71,7 +71,7 @@ def signup(request):
 
         return redirect('/')
 
-    
+    messages.success(request,'succesfully register')
     return render(request,'signup.html')
 
 
