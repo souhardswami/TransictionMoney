@@ -18,6 +18,13 @@ from django.db.models import Count,Sum
 
 
 
+def currentUserBalnce(user):
+    
+    login_user=CustomUser.objects.filter(user_id=user)[0]
+
+    return login_user.account_balance
+
+
 def home(request):
     if(request.method=='POST'):
         username=request.POST['username']
@@ -73,12 +80,9 @@ def logout(request):
     auth.logout(request)
     return redirect('/home')
 
-
+@login_required
 def person(request,targetUser=None):
 
-
-    
-    
     if(request.method=='POST' and request.path_info=='/person/'):
         amount=request.POST['amount']
         print(amount)
@@ -88,6 +92,7 @@ def person(request,targetUser=None):
         'reciever': targetUser.username
     }
     return render(request,'person.html',context)
+
 
 
 @login_required
@@ -109,6 +114,20 @@ def pay(request):
     return render(request,'pay.html')
 
 
+
+@login_required
+def wallet(request):
+    print("fine")
+    login_user=request.user
+
+    content={
+        'accountBalance':currentUserBalnce(login_user)
+    }
+
+    return render(request,'wallet.html',content)
+
+
+
 def login(request):
     print("pass")
 
@@ -120,11 +139,6 @@ def login(request):
 
 def user(request,num):
     print("pass")
-
-
-def wallet(request):
-    print("fine")
-    return render(request,'wallet.html')
 
 
 def history(request):
