@@ -24,6 +24,8 @@ class CustomUser(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
     
     mob=models.CharField(max_length=10)
+
+    targetuser=models.CharField(max_length=10 ,default='0000000000')
     
 
     account_balance=models.IntegerField(default=0)

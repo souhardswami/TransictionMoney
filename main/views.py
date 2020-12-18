@@ -59,7 +59,7 @@ def signup(request):
         newUser.save()
 
 
-        customuser=CustomUser(user=newUser,mob=mobile,account_balance=10)
+        customuser=CustomUser(user=newUser,mob=mobile,account_balance=0)
         customuser.save()
 
         return redirect('/home')
@@ -85,7 +85,36 @@ def person(request,targetUser=None):
 
     if(request.method=='POST' and request.path_info=='/person/'):
         amount=request.POST['amount']
-        print(amount)
+        
+        
+        amount=int(amount)
+
+        myAccountBalance=currentUserBalnce(request.user)
+
+
+        targetUser=CustomUser.objects.filter(user_id=request.user)[0].targetuser
+
+        print("yes")
+        print(targetUser)
+        if(myAccountBalance>=amount):
+            print("semd")
+
+
+            targetUser_mobile=CustomUser.objects.filter(user_id=request.user)[0].targetuser
+            targetUser=CustomUser.objects.filter(mob=targetUser_mobile)[0]
+            targetUser.account_balance+=amount
+            targetUser.save()
+
+            login_user=CustomUser.objects.filter(user_id=request.user)[0]
+            login_user.account_balance-=amount
+            login_user.targetuser=''
+            login_user.save()
+            
+
+        else:
+            print("you have not enought amount to send send")
+        return redirect('/main')
+        
 
 
     context={
@@ -106,7 +135,11 @@ def pay(request):
 
 
         targetUser=CustomUser.objects.filter(mob=mobileNumber)[0]
-        print(targetUser.user.username)
+        login_user=CustomUser.objects.filter(user_id=request.user)[0]
+        # print(login_user)
+        # print(targetUser.user.username)
+        login_user.targetuser=mobileNumber
+        login_user.save()
         
         # return redirect('/person')
         return person(request,targetUser.user)
